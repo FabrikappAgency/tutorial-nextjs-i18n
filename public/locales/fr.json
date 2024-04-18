@@ -1,0 +1,9 @@
+{
+  "Common": {
+    "title": "Bienvenue",
+    "greeting": "Bonjour, {name}!",
+    "description": "Ceci est une démonstration de l'internationalisation.",
+    "date": "Date formatée : {date}",
+    "number": "Nombre formaté : {number}"
+  }
+}

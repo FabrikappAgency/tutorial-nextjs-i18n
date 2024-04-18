@@ -1,0 +1,9 @@
+{
+  "Common": {
+    "title": "Willkommen",
+    "greeting": "Hallo, {name}!",
+    "description": "Dies ist eine Demonstration der Internationalisierung.",
+    "date": "Formatiertes Datum: {date}",
+    "number": "Formatierte Nummer: {number}"
+  }
+}
