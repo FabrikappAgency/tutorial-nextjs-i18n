@@ -49,22 +49,51 @@ npm install next-intl
 
 `next-intl` is a powerful library that simplifies the process of internationalizing Next.js applications.
 
-### Step 3: Configure i18n in `next.config.js`
+### Step 3.1: Configure i18n in `i18n.ts`
 
-Open the `next.config.js` file in the project root and add the following configuration:
+With that setup, you won't edit the `next.config.js` as you're probably used to.
+
+Open the `src/i18n.ts` file in the project root and add the following configuration:
 
 ```javascript
-const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-  i18n: {
-    locales: ["en", "fr", "es"],
-    defaultLocale: "en",
-  },
+import { notFound } from "next/navigation";
+import { getRequestConfig } from "next-intl/server";
+
+// Can be imported from a shared config
+export const locales = ["en", "fr", "es", "de"];
+
+export default getRequestConfig(async ({ locale }) => {
+  // Validate that the incoming `locale` parameter is valid
+  if (!locales.includes(locale as any)) notFound();
+
+  return {
+    messages: (await import(`../public/locales/${locale}.json`)).default,
+  };
+});
+
+```
+### Step 3.2: Create a middleware to manage localized routing `src/middleware.ts`
+
+```javascript
+import createMiddleware from "next-intl/middleware";
+import { locales } from "./i18n";
+
+export default createMiddleware({
+  // A list of all locales that are supported
+  locales: locales,
+
+  // Used when no locale matches
+  defaultLocale: "en",
+  // Used to make the default lang as root
+  localePrefix: "as-needed",
+});
+
+export const config = {
+  // Match only internationalized pathnames
+  matcher: ["/", "/(en)/:path*"],
 };
 
-module.exports = nextConfig;
+
 ```
 
 In this example, we specify the supported locales (`en`, `fr`, and `es`) and set the default locale to `en`. Adjust these values according to your project's requirements.
